@@ -1,0 +1,85 @@
+<html>
+<head>
+<title>api.js</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(204,120,50); font-weight: bold; }
+.s1 { color: rgb(169,183,198); }
+.s2 { color: rgb(106,135,89); }
+.s3 { color: rgb(204,120,50); }
+.s4 { color: rgb(104,151,187); }
+.s5 { color: rgb(128,128,128); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+api.js</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">import </span><span class="s1">axios from </span><span class="s2">&quot;axios&quot;</span><span class="s1"> 
+ 
+</span><span class="s0">function </span><span class="s1">getFoodList(keyword) { 
+    </span><span class="s0">var </span><span class="s1">data = JSON.stringify({ 
+        </span><span class="s2">&quot;query&quot;</span><span class="s1">: keyword</span><span class="s3">,</span><span class="s1"> 
+        </span><span class="s2">&quot;num_servings&quot;</span><span class="s1">: </span><span class="s4">0</span><span class="s3">,</span><span class="s1"> 
+        </span><span class="s2">&quot;line_delimited&quot;</span><span class="s1">: </span><span class="s0">false</span><span class="s3">,</span><span class="s1"> 
+        </span><span class="s2">&quot;use_raw_foods&quot;</span><span class="s1">: </span><span class="s0">false</span><span class="s3">,</span><span class="s1"> 
+        </span><span class="s2">&quot;include_subrecipe&quot;</span><span class="s1">: </span><span class="s0">false</span><span class="s3">,</span><span class="s1"> 
+        </span><span class="s2">&quot;lat&quot;</span><span class="s1">: </span><span class="s4">0</span><span class="s3">,</span><span class="s1"> 
+        </span><span class="s2">&quot;lng&quot;</span><span class="s1">: </span><span class="s4">0</span><span class="s3">,</span><span class="s1"> 
+        </span><span class="s2">&quot;meal_type&quot;</span><span class="s1">: </span><span class="s4">0</span><span class="s3">,</span><span class="s1"> 
+        </span><span class="s2">&quot;use_branded_foods&quot;</span><span class="s1">: </span><span class="s0">false</span><span class="s3">,</span><span class="s1"> 
+        </span><span class="s2">&quot;locale&quot;</span><span class="s1">: </span><span class="s2">&quot;en_US&quot;</span><span class="s3">,</span><span class="s1"> 
+        </span><span class="s2">&quot;taxonomy&quot;</span><span class="s1">: </span><span class="s0">false</span><span class="s3">,</span><span class="s1"> 
+        </span><span class="s2">&quot;ingredient_statement&quot;</span><span class="s1">: </span><span class="s0">false</span><span class="s3">,</span><span class="s1"> 
+        </span><span class="s2">&quot;last_modified&quot;</span><span class="s1">: </span><span class="s0">false</span><span class="s1"> 
+    })</span><span class="s3">;</span><span class="s1"> 
+ 
+    </span><span class="s0">var </span><span class="s1">config = { 
+        method: </span><span class="s2">'post'</span><span class="s3">,</span><span class="s1"> 
+        url: </span><span class="s2">'https://trackapi.nutritionix.com/v2/natural/nutrients'</span><span class="s3">,</span><span class="s1"> 
+        headers: { 
+            </span><span class="s2">'accept'</span><span class="s1">: </span><span class="s2">'application/json'</span><span class="s3">,</span><span class="s1"> 
+            </span><span class="s2">'x-app-id'</span><span class="s1">: </span><span class="s2">'ce37d2c9'</span><span class="s3">,</span><span class="s1"> 
+            </span><span class="s2">'x-app-key'</span><span class="s1">: </span><span class="s2">'683597201bdbd81d447cead9f95b47cb'</span><span class="s3">,</span><span class="s1"> 
+            </span><span class="s2">'x-remote-user-id'</span><span class="s1">: </span><span class="s2">'0'</span><span class="s3">,</span><span class="s1"> 
+            </span><span class="s2">'Content-Type'</span><span class="s1">: </span><span class="s2">'application/json'</span><span class="s1"> 
+        }</span><span class="s3">,</span><span class="s1"> 
+        data: data 
+    }</span><span class="s3">;</span><span class="s1"> 
+ 
+    axios(config) 
+        .then(</span><span class="s0">function </span><span class="s1">(response) { 
+            console.log(JSON.stringify(response.data))</span><span class="s3">;</span><span class="s1"> 
+            </span><span class="s0">return </span><span class="s1">{ 
+                success: </span><span class="s0">true</span><span class="s3">,</span><span class="s1"> 
+                </span><span class="s5">// body: JSON.stringify(response.data)</span><span class="s1"> 
+                data: { 
+                    foodList: response.data.foods.map(food =&gt; { 
+                        </span><span class="s0">return </span><span class="s1">{ 
+                            </span><span class="s2">&quot;id&quot;</span><span class="s1">:food.tags.tag_id</span><span class="s3">,</span><span class="s1"> 
+                            </span><span class="s2">&quot;name&quot;</span><span class="s1">: food.tags.item</span><span class="s3">,</span><span class="s1"> 
+                            </span><span class="s2">&quot;qty&quot; </span><span class="s1">: food.tags.quantity</span><span class="s3">,</span><span class="s1"> 
+                            </span><span class="s2">&quot;cal&quot; </span><span class="s1">: food.nf_calories</span><span class="s3">,</span><span class="s1">                           
+                            </span><span class="s2">&quot;photo&quot;</span><span class="s1">:food.photo.thumb</span><span class="s3">,</span><span class="s1">     
+                        } 
+                    }) 
+                } 
+            } 
+        }) 
+        .catch(</span><span class="s0">function </span><span class="s1">(error) { 
+            console.log(error)</span><span class="s3">;</span><span class="s1"> 
+            </span><span class="s0">return </span><span class="s1">{  
+                successs: </span><span class="s0">false</span><span class="s3">,</span><span class="s1">  
+                body: error.toString() } 
+        })</span><span class="s3">;</span><span class="s1"> 
+} 
+</span><span class="s0">export default </span><span class="s1">getFoodList</span><span class="s3">;</span><span class="s1"> 
+ 
+getFoodList(</span><span class="s2">&quot;3 eggs&quot;</span><span class="s1">)</span><span class="s3">;</span><span class="s1"> 
+</span></pre>
+</body>
+</html>
